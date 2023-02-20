@@ -1,0 +1,436 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js">
+</script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+
+<script type="text/javascript">
+    function showHideRow(row) {
+        $("#" + row).toggle();
+    }
+</script>
+
+<style>
+    body {
+        margin: 0 auto;
+        padding: 0px;
+        text-align: center;
+        width: 100%;
+        font-family: "Myriad Pro",
+            "Helvetica Neue", Helvetica,
+            Arial, Sans-Serif;
+    }
+
+    #wrapper {
+        margin: 0 auto;
+        padding: 0px;
+        /* text-align: center; */
+        /* width: 995px; */
+    }
+
+    #wrapper h1 {
+        margin-top: 50px;
+        font-size: 45px;
+        color: #585858;
+    }
+
+    #wrapper h1 p {
+        font-size: 20px;
+    }
+
+    #table_detail {
+        width: 500px;
+        text-align: left;
+        border-collapse: collapse;
+        color: #2E2E2E;
+        border: #A4A4A4;
+    }
+
+    #table_detail tr:hover {
+        background-color: #F2F2F2;
+    }
+
+    #table_detail .hidden_row {
+        display: none;
+    }
+
+    
+</style>
+
+<style>
+    form {
+        background-color: white;
+        padding: 30px;
+    }
+
+    form .input-group {
+        margin-bottom: 15px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    form input {
+        padding: 12px 20px;
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+    .submit-btn {
+        width: 20%;
+        border: none;
+        background: rgb(37, 83, 3);
+        font-size: 18px;
+        color: white;
+        border-radius: 3px;
+        padding: 20px;
+        text-align: center;
+    }
+
+
+
+    /* Center the loader */
+    #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 120px;
+        margin: -76px 0 0 -76px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+        from {
+            bottom: -100px;
+            opacity: 0
+        }
+
+        to {
+            bottom: 0px;
+            opacity: 1
+        }
+    }
+
+    @keyframes animatebottom {
+        from {
+            bottom: -100px;
+            opacity: 0
+        }
+
+        to {
+            bottom: 0;
+            opacity: 1
+        }
+    }
+
+    #myDiv {
+        display: none;
+        text-align: center;
+    }
+</style>
+
+<!-- <link rel="stylesheet" href="./bar.css"> -->
+
+<body>
+    <div id="loader"></div>
+
+    <div class="container">
+        <h1>SecureDApp Audits</h1>
+        <form id='form'>
+            <!-- <div class="input-group">
+                <label for='name'>Your name</label>
+                <input name='name' id='name' placeholder="Enter your name" />
+            </div> -->
+            <div class="input-group">
+                <label for='files'>Select a Flatten Contract</label>
+                <input id='files' type="file" multiple>
+                <!-- <input id='files' type="file"> -->
+
+            </div>
+            <button class="submit-btn" type='submit'>Analyze</button>
+        </form>
+
+        <h1>Results</h1>
+        <div id="wrapper">
+
+            <table border=1 id="table_detail" align=center cellpadding=10>
+                <tbody>
+                    <tr>
+                        <td>Audit Hash:</td>
+                        <td id="2a"></td>
+                    </tr>
+                    <tr>
+                        <td>Number of Contracts:</td>
+                        <td id="1a"></td>
+                    </tr>
+                    <tr>
+                        <td>Lines of code scanned:</td>
+                        <td id="a"></td>
+                    </tr>
+                    <tr>
+                        <td>Lines of assembly code:</td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr>
+                        <td>ERCs Standard Used:</td>
+                        <td id="b2"></td>
+                    </tr>
+                    <tr>
+                        <td>Total Vulnerabilities Found:</td>
+                        <td id="c"></td>
+                    </tr>
+                    <tr onclick="showHideRow('f');">
+                        <td id="e1"> Critical: </td>
+                        <td>
+                            <P id="e"></p>
+                        </td>
+                    </tr>
+
+                <tbody id="f" class="f">
+                </tbody>
+
+                <tr onclick="showHideRow('h');">
+                    <td id="g1">Medium:</td>
+                    <td>
+                        <P id="g"></p>
+                    </td>
+                </tr>
+                <tbody id="h" class="h">
+                 
+                </tbody>
+                <tr onclick="showHideRow('j');">
+                    <td id="i1">Low:</td>
+                    <td>
+                        <P id="i"></p>
+                    </td>
+                </tr>
+                <tbody id="j" class="j">
+              
+                </tbody>
+                <tr onclick="showHideRow('l');">
+                    <td id="k1">Informational:</td>
+                    <td>
+                        <P id="k"></p>
+                    </td>
+                </tr>
+                <tbody id="l" class="l">
+                </tbody>
+
+                <tr onclick="showHideRow('n');">
+                    <td id="m1">Gas Optimization:</td>
+                    <td>
+                        <P id="m"></p>
+                    </td>
+                </tr>
+                <tbody id="n" class="n">
+                </tbody>
+
+
+
+                <!-- <button type="button" class="collapsible">Slither Report</button>
+    <div class="content">
+        <textarea id="wordOut" name="wordOut" rows="100" cols="400">
+        Slither Report
+        </textarea>
+    </div> -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    // var coll = document.getElementsByClassName("collapsible");
+    // var i;
+    // for (i = 0; i < coll.length; i++) {
+    //     coll[i].addEventListener("click", function () {
+    //         this.classList.toggle("active");
+    //         var content = this.nextElementSibling;
+    //         if (content.style.display === "block") {
+    //             content.style.display = "none";
+    //         } else {
+    //             content.style.display = "block";
+    //         }
+    //     });
+    // }
+
+
+    let form = document.getElementById("form");
+    form.addEventListener("submit", submitForm);
+
+    document.getElementById("loader").style.display = "none";
+
+
+    async function submitForm(e) {
+        document.getElementById("loader").style.display = "block";
+
+        e.preventDefault();
+        // let name = document.getElementById("name");
+        let files = document.getElementById("files");
+        let formData = new FormData();
+        // formData.append("name", name.value);
+        for (let i = 0; i < files.files.length; i++) {
+            formData.append("files", files.files[i]);
+        }
+        let response = await fetch("http://localhost:8000/audits", {
+            method: 'POST',
+            body: formData,
+            headers: {
+            }
+        });
+        if (response.status === 200) {
+            let data = await response.text();
+            console.log(typeof (data));
+            // console.log(JSON.parse(data));
+            // document.getElementById("wordOut").innerHTML = JSON.parse(data);
+            generateTable(JSON.parse(data));
+        } else {
+            document.getElementById("loader").style.display = "none";
+        }
+        document.getElementById("loader").style.display = "none";
+
+    }
+
+    function generateTable(data) {
+
+        let finding_names = ["high_issues", "medium_issues", "low_issues", "informational_issues", "optimization_issues"];
+
+        document.getElementById("1a").textContent = data.contracts;
+        document.getElementById("2a").textContent = data.id;
+        document.getElementById("a").textContent = data.lines;
+        document.getElementById("b").textContent = data.assembly_lines;
+        document.getElementById("b2").textContent = data.ercs.join("  |  ");
+        document.getElementById("c").textContent = data.detectors;
+
+        let cell = document.getElementById("e1");
+        cell.innerHTML = "Critical [ " + data.findings[finding_names[0]] + " ]";
+        var g = document.createElement("progress");
+        g.setAttribute("value", data.findings[finding_names[0]]);
+        g.setAttribute("max", data.detectors);
+        document.getElementById("e").innerHTML = '';
+        document.getElementById("e").appendChild(g);
+
+
+        cell = document.getElementById("g1");
+        cell.innerHTML = "Medium [ " + data.findings[finding_names[1]] + " ]"; g = document.createElement("progress");
+        g.setAttribute("value", data.findings[finding_names[1]]);
+        g.setAttribute("max", data.detectors);
+        document.getElementById("g").innerHTML = '';
+        document.getElementById("g").appendChild(g);
+
+        cell = document.getElementById("i1");
+        cell.innerHTML = "Low [ " + data.findings[finding_names[2]] + " ]";
+        g = document.createElement("progress");
+        g.setAttribute("value", data.findings[finding_names[2]]);
+        g.setAttribute("max", data.detectors);
+        document.getElementById("i").innerHTML = '';
+        document.getElementById("i").appendChild(g);
+
+        cell = document.getElementById("k1");
+        cell.innerHTML = "Informational [ " + data.findings[finding_names[3]] + " ]";
+        g = document.createElement("progress");
+        g.setAttribute("value", data.findings[finding_names[3]]);
+        g.setAttribute("max", data.detectors);
+        document.getElementById("k").innerHTML = '';
+        document.getElementById("k").appendChild(g);
+
+        cell = document.getElementById("m1");
+        cell.innerHTML = "Gas Optimizations [ " + data.findings[finding_names[4]] + " ]";
+        g = document.createElement("progress");
+        g.setAttribute("value", data.findings[finding_names[4]]);
+        g.setAttribute("max", data.detectors);
+        document.getElementById("m").innerHTML = '';
+        document.getElementById("m").appendChild(g);
+
+        var subtable = ["a","f","h","j","l","n"];
+
+        for (var p = 1; p < 6; p++) {
+            document.getElementById(subtable[p]).innerHTML = '';
+            Object.keys(data[p]).forEach(function (key) {
+                // console.log(p);
+                // console.log("Key = ", key);
+
+                var datas = [
+                    { confidence: "Concern", detail: key },
+                    { confidence: "Confidence", detail: "Details"}
+                ];
+
+                var table = document.getElementById(subtable[p]);
+                    for (var i = 0; i < datas.length; i++) {
+                        var row = document.createElement("tr");
+                        var cell1 = document.createElement("td");
+                        var cell2 = document.createElement("td");
+                        cell1.textContent = datas[i].confidence;
+                        cell2.textContent = datas[i].detail;
+                        row.appendChild(cell1);
+                        row.appendChild(cell2);
+                        row.style.backgroundColor = "grey";
+                        table.appendChild(row);
+                    }
+
+                data[p][key].forEach(function (element) {
+                    // console.log(element);  
+                    data2 = element.split("|||");  
+                    var table = document.getElementById(subtable[p]);
+                        var row = document.createElement("tr");
+                        var cell1 = document.createElement("td");
+                        var cell2 = document.createElement("td");
+                        cell1.textContent = data2[0];
+                        cell2.textContent = data2[1];
+                        row.appendChild(cell1);
+                        row.appendChild(cell2);
+                        table.appendChild(row);
+
+                });
+
+            });
+        }
+
+
+    }
+    showHideRow('f');
+    showHideRow('h');
+    showHideRow('j');
+    showHideRow('l');
+    showHideRow('n');
+
+</script>
