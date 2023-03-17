@@ -402,7 +402,7 @@
     for (let i = 0; i < files.files.length; i++) {
       formData.append("files", files.files[i]);
     }
-    let response = await fetch("https://139.59.5.56:3443/audits", {
+    let response = await fetch("https://139-59-5-56.nip.io:3443/audits", {
       method: 'POST',
       body: formData,
       headers: {
